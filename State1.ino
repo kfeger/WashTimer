@@ -6,21 +6,21 @@
 void State1(void) {
   int ZeigerPosition;
   if (StartZeiger) {
-    Zeiger.write(0);  // Servo auf Null
-    digitalWrite(BUZZER, HIGH);
-    delay(100);   // Stellzeit abwarten
-    digitalWrite(BUZZER, LOW);
+    Zeiger.attach(SERVO);
+    Zeiger.write(ServoBeginn);  // Servo auf Null
+    Buzzer100();
     LastPing = millis();
     while ((millis() - LastPing) < WASHTIME) {
-      ZeigerPosition = map((millis() - LastPing), 0, WASHTIME, 0, 180);
+      ZeigerPosition = map((millis() - LastPing), 0, WASHTIME, ServoBeginn, ServoEnde);
       Zeiger.write(ZeigerPosition);
       delay(10);
     }
     StartZeiger = false;
-    Led.setBrightness(128);
-    rainbow(10);
-    Led.setBrightness(50);
-    Zeiger.write(0);
-    delay(50);
+    Led.setBrightness(BRIGHT_HIGH);
+    rainbow(30);
+    Led.setBrightness(BRIGHT_LOW);
+    Zeiger.write(ServoBeginn);
+    delay(50); 
+    Zeiger.detach();
   }
 }

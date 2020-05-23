@@ -5,22 +5,22 @@
 
 void State0(void) {
   if ((millis() - LastPing) >= 100) { // alle 100ms Entfernung messen
-    EntfernungGrenze = (int)EEPROM.read(2);
+     EEPROM.get(2, EntfernungGrenze);
     Entfernung = Abstand.ping_cm();
     if ((Entfernung) && (Entfernung < EntfernungGrenze)) {  // größer Null und näher als EntfernungGrenze
       NahZaehler++;
       if (NahZaehler > 15) {
         StartZeiger = true;
-        SetStrand(GRUEN, 100);
+        SetStrand(GRUEN, BRIGHT_HIGH);
       }
       else {
         StartZeiger = false;
-        SetStrand(GELB, 50);
+        SetStrand(GELB, BRIGHT_LOW);
       }
     }
     else {
       NahZaehler = 0;
-      SetStrand(ROT, 5);
+      SetStrand(ROT, BRIGHT_LOW/4);
     }
     LastPing = millis();
   }
